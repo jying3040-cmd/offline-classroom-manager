@@ -6,7 +6,7 @@ Add-Type -AssemblyName System.IO.Compression.FileSystem
 $sourceRoot = Split-Path $PSScriptRoot -Parent
 $current = Join-Path $DeliveryRoot 'v4.0\班级管理系统'
 $rows = @()
-foreach ($relative in @('v4.0\班级管理系统_v4.0.zip', '历史\v1.0\班级管理系统_v1.0.zip', '历史\v2.0\班级管理系统_v2.0.zip', '历史\v3.0\班级管理系统_v3.0.zip')) {
+foreach ($relative in @('v4.0\班级管理系统_v4.0.zip', 'v1.0\班级管理系统_v1.0.zip', 'v2.0\班级管理系统_v2.0.zip', 'v3.0\班级管理系统_v3.0.zip')) {
   $path = Join-Path $DeliveryRoot $relative
   $zip = [IO.Compression.ZipFile]::OpenRead($path)
   $count = 0
