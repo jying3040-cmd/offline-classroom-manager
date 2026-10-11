@@ -1,0 +1,50 @@
+name: classroom_manager
+description: 小学班级管理系统 - 本地单机版（名单 / 小红花 / 抽签 / 听写）
+publish_to: 'none'
+version: 4.0.0
+
+environment:
+  sdk: '>=3.4.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  archive: ^3.6.0
+  excel: ^4.0.0
+  path: ^1.9.0
+  # 仅纯 Dart 依赖，避免 Windows 插件 symlink 依赖“开发人员模式”。
+  # sqlite3.dll 由构建后脚本手动部署到 exe 目录。
+  sqflite_common_ffi: ^2.3.0
+  uuid: ^4.4.0
+
+dev_dependencies:
+  flutter_lints: ^4.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+  assets:
+    # 教材词表打包发音（目录声明不递归，每组单独列出）。
+    - assets/tts_seed/g01/
+    - assets/tts_seed/g02/
+    - assets/tts_seed/g03/
+    - assets/tts_seed/g04/
+    - assets/tts_seed/g05/
+    - assets/tts_seed/g06/
+    - assets/tts_seed/g07/
+    - assets/tts_seed/g08/
+    - assets/tts_seed/g09/
+    - assets/tts_seed/g10/
+    - assets/tts_seed/g11/
+    - assets/tts_seed/g12/
+    - assets/tts_seed/g13/
+    - assets/tts_seed/g14/
+    - assets/tts_seed/g15/
+    - assets/tts_seed/g16/
+    - assets/tts_seed/g17/
+    - assets/tts_seed/g18/
+  fonts:
+    - family: KuaiLe
+      fonts:
+        - asset: assets/fonts/ZCOOLKuaiLe-Regular.ttf
