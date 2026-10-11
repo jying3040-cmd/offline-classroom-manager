@@ -241,7 +241,7 @@ git status windows/     # 应无改动
 python scripts/rebuild_windows_release.py \
     --project C:/dev/classroom_manager \
     --flutter-root C:/tools/flutter \
-    --sync "C:/Users/7/Desktop/小学班级管理系统/交付/v4.0/班级管理系统/data"
+    --sync "C:/dev/classroom_manager/build/windows/x64/runner/Release/data"
 ```
 
 它会执行 `flutter assemble`，并把结果同步到 CMake Release 输出目录与所有 `--sync` 目标。
@@ -301,17 +301,16 @@ for s in ['导入录音', '输入词语', '3.0.0']:
 
 ### 发布包目录约定
 
-成果物统一存放在 `C:\Users\7\Desktop\小学班级管理系统\交付\`。根目录仅按 `vX.Y\` 枚举版本，新旧版本直接并列；项目文档留在 `doc/`，源码与构建缓存留在 ASCII 源码目录。完整整理原则见 [FILE_ORGANIZATION.md](FILE_ORGANIZATION.md)。
+成果物统一存放在 `C:\Users\7\Desktop\小学班级管理系统\交付\`。构建产物先暂存于 `C:\dev\classroom_manager\build`，最终 ZIP 放入对应的 `交付\vX.Y\`。交付根目录只保留直接并列的 `v1.0\`、`v2.0\`、`v3.0\`、`v4.0\`；每个版本目录只保留一个对应 ZIP，不留解压运行目录或外置说明。使用说明必须包含在 ZIP 内，项目文档留在 `doc/`，源码与构建缓存留在 ASCII 源码目录。完整整理原则见 [FILE_ORGANIZATION.md](FILE_ORGANIZATION.md)。
 
 ```text
 交付\v4.0\
-├── 班级管理系统_v4.0.zip      ← 分发包
-└── 班级管理系统\             ← 完整可运行目录，含使用说明.txt
+└── 班级管理系统_v4.0.zip      ← 唯一分发包（包内含使用说明.txt）
 ```
 
 ### 打包步骤
 
-1. 按第 10 节构建（或重建 Dart 侧产物），先备份已有版本，再同步到 `交付\vX.Y\班级管理系统\data\`。
+1. 按第 10 节构建（或重建 Dart 侧产物），先备份已有版本，再从 `C:\dev\classroom_manager\build` 准备待打包的完整运行目录。
 2. **确认 `data\flutter_assets\assets\tts_seed\` 完整**（213 个 wav，18 个分组）。
 3. 打包为 zip。
 4. 校验压缩包：
@@ -323,7 +322,7 @@ print(len(z.namelist()), z.testzip() is None)
 ```
 
 5. **端到端验证**：把 zip 解压到临时目录，**从该目录启动**，确认能运行（证明包自包含）。
-6. 放入 `交付\vX.Y\`，更新交付清单及 SHA-256；上一版本的 `交付\vX.Y\` 原位保留。
+6. 将最终 ZIP 放入 `交付\vX.Y\`，确认该版本目录只含这一个 ZIP，更新交付清单及 SHA-256；上一版本的 `交付\vX.Y\` 原位保留。
 
 > **常见陷阱**：重新打包时沿用旧包的文件清单，会漏掉后来新增的资源（例如 `assets/tts_seed/`），导致应用静默降级到运行时兜底。**必须比对新旧包的资源列表**，不要假设旧包是完整的。
 
