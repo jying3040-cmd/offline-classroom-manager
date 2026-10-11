@@ -241,7 +241,7 @@ git status windows/     # 应无改动
 python scripts/rebuild_windows_release.py \
     --project C:/dev/classroom_manager \
     --flutter-root C:/tools/flutter \
-    --sync "C:/Users/7/Desktop/opc/01-项目/小学班级管理系统/交付/班级管理系统/data"
+    --sync "C:/Users/7/Desktop/小学班级管理系统/交付/v4.0/班级管理系统/data"
 ```
 
 它会执行 `flutter assemble`，并把结果同步到 CMake Release 输出目录与所有 `--sync` 目标。
@@ -272,7 +272,7 @@ xcopy /e /i /y build\flutter_assets build\windows\x64\runner\Release\data\flutte
 
 ### 版本号
 
-版本号在 `pubspec.yaml` 的 `version:` 字段（当前 `3.0.0`）。`FLUTTER_BUILD_NAME` 只有在 Dart 代码实际引用时才会进入 AOT 快照：
+版本号在 `pubspec.yaml` 的 `version:` 字段（当前 `4.0.0`）。`FLUTTER_BUILD_NAME` 只有在 Dart 代码实际引用时才会进入 AOT 快照：
 
 ```dart
 const String _appVersion =
@@ -301,17 +301,17 @@ for s in ['导入录音', '输入词语', '3.0.0']:
 
 ### 发布包目录约定
 
-每个版本在 `Desktop\opc\02-发布\班级管理系统\` 下建 `vX.Y\`，内含两件东西（发给老师时整包拷走）：
+成果物统一存放在 `C:\Users\7\Desktop\小学班级管理系统\交付\`。当前版本放在 `vX.Y\`，历史版本放在 `历史\vX.Y\`；源码与构建缓存留在 ASCII 源码目录。完整整理原则见 [FILE_ORGANIZATION.md](FILE_ORGANIZATION.md)。
 
 ```text
-02-发布\班级管理系统\v3.0\
-├── 班级管理系统_v3.0.zip      ← 解压即用
-└── 使用说明.txt               ← 一页纸指南
+交付\v4.0\
+├── 班级管理系统_v4.0.zip      ← 分发包
+└── 班级管理系统\             ← 完整可运行目录，含使用说明.txt
 ```
 
 ### 打包步骤
 
-1. 按第 10 节构建（或重建 Dart 侧产物），并同步到 `交付\班级管理系统\data\`。
+1. 按第 10 节构建（或重建 Dart 侧产物），先备份已有版本，再同步到 `交付\vX.Y\班级管理系统\data\`。
 2. **确认 `data\flutter_assets\assets\tts_seed\` 完整**（213 个 wav，18 个分组）。
 3. 打包为 zip。
 4. 校验压缩包：
@@ -323,7 +323,7 @@ print(len(z.namelist()), z.testzip() is None)
 ```
 
 5. **端到端验证**：把 zip 解压到临时目录，**从该目录启动**，确认能运行（证明包自包含）。
-6. 放入 `02-发布\班级管理系统\vX.Y\`。
+6. 放入 `交付\vX.Y\`，更新交付清单及 SHA-256；上一版本移至 `交付\历史\vX.Y\`。
 
 > **常见陷阱**：重新打包时沿用旧包的文件清单，会漏掉后来新增的资源（例如 `assets/tts_seed/`），导致应用静默降级到运行时兜底。**必须比对新旧包的资源列表**，不要假设旧包是完整的。
 
@@ -331,7 +331,7 @@ print(len(z.namelist()), z.testzip() is None)
 
 | 场景 | 做法 |
 |---|---|
-| 新构建有问题 | 用 `02-发布\` 中上一版本的 zip 重新分发 |
+| 新构建有问题 | 用 `交付\历史\` 中上一版本的 zip 重新分发 |
 | 交付文件夹被改坏 | 从 `_backup_YYYYMMDD/` 恢复（**打包前必须先建这个备份**） |
 | Dart 侧重建出错 | 重新执行第 10 节流程；`app.so` 可反复重建 |
 | C++ 侧改动出错 | 需要 Visual Studio 才能回退重链 |

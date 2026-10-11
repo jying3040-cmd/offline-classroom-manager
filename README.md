@@ -36,6 +36,7 @@ windows/         Windows runner 与 MFPlay
 test/            自动化测试
 tools/           资源生成与校验脚本
 _archive/        已下线页面，仅留存备查
+doc/             需求、架构、开发流程与文件整理原则
 ~~~
 
 ## 开发
@@ -63,6 +64,10 @@ flutter test test/group_fields_test.dart
 ```
 
 功能规则见 [需求说明](doc/REQUIREMENTS.md)，数据模型见 [架构说明](doc/ARCHITECTURE.md)。
+
+## 交付与文件整理
+
+成果物统一位于 `C:\Users\7\Desktop\小学班级管理系统\交付\`：`v4.0/` 为当前交付版，`历史/` 保存旧版，`文档/` 链接到仓库唯一文档源。工作区通过 junction 访问本仓库，避免维护第二份源码或文档。目录职责、去重依据和校验结果见 [文件整理原则](doc/FILE_ORGANIZATION.md)。发布二进制留在本机交付目录，源码、脚本与原则文档通过 Git 推送。
 
 ## 仓库
 
