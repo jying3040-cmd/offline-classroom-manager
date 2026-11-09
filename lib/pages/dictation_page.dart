@@ -58,6 +58,10 @@ class _DictationPageState extends State<DictationPage> {
 
   /// 一键导入教材《词语表》：按课文建组，内置离线普通话发音。
   Future<void> _importTextbook() async {
+    if (textbookGroups.isEmpty) {
+      _toast('当前没有内置教材词表，请新建词表并输入词语');
+      return;
+    }
     final ok = await _confirm(
       '一键导入教材词表',
       '将按课文创建 ${textbookGroups.length} 组词表，共 $textbookWordCount 个词语，'
@@ -274,8 +278,7 @@ class _DictationPageState extends State<DictationPage> {
                   size: 72, color: theme.colorScheme.outline),
               const SizedBox(height: 16),
               const Text(
-                '还没有词表。一键导入教材《词语表》，'
-                '每课一组、自动配好普通话发音；\n也可以新建词表自己录入词语。',
+                '还没有词表，请新建词表并输入词语。',
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 16),

@@ -5,7 +5,7 @@ import '../services/backup_service.dart';
 
 /// 构建时由 `flutter build` 注入（见 pubspec.yaml 的 version 字段）。
 const String _appVersion =
-    String.fromEnvironment('FLUTTER_BUILD_NAME', defaultValue: '4.0.0');
+    String.fromEnvironment('FLUTTER_BUILD_NAME', defaultValue: '5.0.0');
 
 /// 设置：数据目录说明、一键备份/恢复、关于。
 class SettingsPage extends StatefulWidget {

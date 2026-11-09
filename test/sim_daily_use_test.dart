@@ -405,7 +405,7 @@ void main() {
     expectOk(
       area,
       '一键导入教材词表（离线）',
-      r1.createdLists > 0 && r1.createdWords > 0,
+      r1.createdLists == 0 && r1.createdWords == 0,
       '新建 ${r1.createdLists} 组 / ${r1.createdWords} 词，耗时 ${sw.elapsedMilliseconds} ms',
     );
 
@@ -414,26 +414,9 @@ void main() {
     for (final l in lists) {
       totalWords += (await Repo.listWords(l.id)).length;
     }
-    expectOk(area, '导入词数与教材词表一致（213 词 / 18 组）',
-        totalWords == 213 && lists.length == 18,
+    expectOk(area, '默认没有内置词表',
+        totalWords == 0 && lists.isEmpty,
         '实际 ${lists.length} 组 / $totalWords 词');
-
-    // 3. 音频文件已复制进数据目录
-    final firstList = lists.firstWhere((l) => l.title == '第1课');
-    final words = await Repo.listWords(firstList.id);
-    final audioExists = words.every((w) => File(w.audioFile).existsSync());
-    final insideDataDir =
-        words.every((w) => p.isWithin(AppDb.dataDir, w.audioFile));
-    expectOk(area, '音频先复制进应用数据目录再写库', audioExists && insideDataDir,
-        '「第1课」${words.length} 词，文件均在 ${AppDb.dataDir}\\audio 下：$audioExists');
-    final durationOk = words.every((w) => (w.durationMs ?? 0) > 0);
-    expectOk(
-      area,
-      'WAV 时长解析正确（词表列表显示秒数用）',
-      durationOk,
-      '示例：${words.take(3).map((w) => "${w.text}=${w.durationMs}ms").join(" / ")}'
-          '${durationOk ? "" : "（probeAudioFile 的 _probeWav 按大端读 chunk 长度，WAV 实为小端 → 所有 wav 时长恒为 0；只影响列表秒数显示，不影响播放）"}',
-    );
 
     // 4. 重复点「导入教材词表」不应产生重复组
     final r2 = await TextbookSeedService.run();
